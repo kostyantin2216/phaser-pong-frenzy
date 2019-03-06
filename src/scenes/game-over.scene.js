@@ -52,7 +52,7 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     startGame() {
-        console.log('start game', SCENE_NAME);
+        console.log(SCENE_NAME, 'play again');
         app.emitter.emit(Events.RESET_GAME);
         this.scene.start(MainScene.SCENE_NAME);
     }

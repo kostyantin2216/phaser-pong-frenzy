@@ -9,6 +9,7 @@ import ScoreBox from '../ui/score-box';
 import AlignGrid from '../utils/align-grid';
 import GameOverScene from './game-over.scene';
 import Events from '../events';
+import MediaManager from '../utils/media-manager';
 
 export const SCENE_NAME = 'MainScene';
 
@@ -25,6 +26,9 @@ export default class MainScene extends Phaser.Scene {
     }
     
     create() {
+        this.mediaManager = new MediaManager({
+            scene: this, app
+        });
         this.soundBtns = new SoundButtons({
             scene: this, app
         });
@@ -47,6 +51,8 @@ export default class MainScene extends Phaser.Scene {
 
         this.paddle2 = this.physics.add.sprite(this.centerX, this.quarter * 3, Assets.PADDLES);
         scaleToGameWidth(app, this.paddle2, 0.25);
+
+        this.pScale = this.paddle1.scaleX;
 
         this.scoreBox = new ScoreBox({
             scene: this, 
@@ -99,9 +105,10 @@ export default class MainScene extends Phaser.Scene {
         } else if (absVelocity < 300) {
             this.velocity *= 1.01;
         }
-        console.log(this.velocity);
+        
+        app.emitter.emit(Events.PLAY_SOUND, Assets.HIT);
 
-        if (true) {//ball.frame.name === paddle.frame.name) {
+        if (ball.frame.name === paddle.frame.name) {
             const distY = Math.abs(this.paddle1.y - this.paddle2.y);
             
             let points = 1;
@@ -125,6 +132,7 @@ export default class MainScene extends Phaser.Scene {
                 });
             }
         } else {
+            app.emitter.emit(Events.PLAY_SOUND, Assets.LOSE);
             this.time.addEvent({
                 delay: 1000,
                 callback: this.gameOver,
@@ -135,6 +143,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     gameOver() {
+        console.log(SCENE_NAME, 'game over');
         this.scene.start(GameOverScene.SCENE_NAME);
     }
 
@@ -148,11 +157,12 @@ export default class MainScene extends Phaser.Scene {
         const paddle = this.velocity > 0 ? this.paddle2 : this.paddle1;
         this.tweens.add({
             targets: paddle,
-            duration: 200,
+            duration: 100,
             scaleX: 0,
             onComplete: this.onCompleteHandler.bind(this),
-            onCompleteParams: [{ paddle, originalScale: paddle.scaleX }]
+            onCompleteParams: [{ paddle, originalScale: this.pScale }]
         });
+        app.emitter.emit(Events.PLAY_SOUND, Assets.FLIP);
     }
 
     onCompleteHandler(tween, targets, params) {
@@ -161,7 +171,7 @@ export default class MainScene extends Phaser.Scene {
         paddle.setFrame(color);
         this.tweens.add({
             targets: paddle,
-            duration: 200,
+            duration: 100,
             scaleX: params.originalScale
         });
     }

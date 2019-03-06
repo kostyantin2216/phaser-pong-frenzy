@@ -42,6 +42,7 @@ export default class SoundButtons extends Phaser.GameObjects.Container {
         this.add(this.toggleSound);
         this.add(this.toggleMusic);
 
+        this.toggleMusic.visible = false;
         this.scene.add.existing(this);
     }
 

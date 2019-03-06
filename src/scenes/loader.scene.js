@@ -30,15 +30,19 @@ export default class LoaderScene extends Phaser.Scene {
         });
         this.progressText.setOrigin(0.5, 0.5);
         this.load.on('progress', this.onProgress, this);
-        this.load.image(Assets.BG_TOGGLE, 'assets/images/toggles/blue.png');
+        this.load.image(Assets.TITLE, 'assets/images/title.png');
+        this.load.image(Assets.BG_TOGGLE, 'assets/images/toggles/yellow.png');
         this.load.image(Assets.SFX_ON, 'assets/images/sfx_on.png');
         this.load.image(Assets.SFX_OFF, 'assets/images/sfx_off.png');
         this.load.image(Assets.MUSIC_ON, 'assets/images/music_on.png');
         this.load.image(Assets.MUSIC_OFF, 'assets/images/music_off.png');
-        this.load.image(Assets.BTN_START_GAME, 'assets/images/buttons/round/blue.png');
-        this.load.image(Assets.BTN_PLAY_AGAIN, 'assets/images/buttons/round/blue.png');
+        this.load.image(Assets.BTN_START_GAME, 'assets/images/buttons/round/yellow.png');
+        this.load.image(Assets.BTN_PLAY_AGAIN, 'assets/images/buttons/round/yellow.png');
         this.load.image(Assets.BAR, 'assets/images/bar.jpg');
         this.load.image(Assets.GAME_OVER, 'assets/images/game-over.png');
+        this.load.audio(Assets.FLIP, ['assets/audio/flip.wav', 'assets/audio/flip.ogg']);
+        this.load.audio(Assets.HIT, ['assets/audio/hit.wav', 'assets/audio/hit.ogg']);
+        this.load.audio(Assets.LOSE, ['assets/audio/lose.wav', 'assets/audio/lose.ogg']);
         this.load.spritesheet(Assets.BALLS, 'assets/images/balls.png', { frameWidth: 100, frameHeight: 100 });
         this.load.spritesheet(Assets.PADDLES, 'assets/images/paddles.png', { frameWidth: 400, frameHeight: 50 });
     }
